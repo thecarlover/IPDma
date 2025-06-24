@@ -4,9 +4,12 @@ import {
   getAllPatients,
   updatePatient,
   deletePatient,
-  getTodaysPatients
+  getTodaysPatients,
+  
 } from '../controllers/patientController.js';
 import { requireRole } from '../middleware/authMiddleware.js';
+
+import { getPatientById } from "../controllers/patientController.js";
 
 
 const router = express.Router();
@@ -22,6 +25,8 @@ router.put('/:id', requireRole('admin','receptionist'), updatePatient);
 router.delete('/:id', requireRole('admin','receptionist'), deletePatient);
 
 router.get('/today', requireRole('admin','receptionist'), getTodaysPatients);
+
+router.get("/:id", requireRole("admin", "receptionist"), getPatientById);
 
 
 

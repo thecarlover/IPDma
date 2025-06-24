@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UpdatePatientForm from "./UpdatePatientForm";
+import { Link } from "react-router-dom";
 
 export default function AllPatientsTable({ data, refetch }) {
   const [editingPatient, setEditingPatient] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -33,17 +36,23 @@ export default function AllPatientsTable({ data, refetch }) {
                 <td className="px-4 py-2 border-b flex gap-2">
                   <button
                     onClick={() => setEditingPatient(p)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-sm cursor-pointer"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-sm"
                   >
                     ✏️ Edit
                   </button>
-                  <button className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm cursor-pointer">
+                  <button className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm">
                     🗑️ Delete
-
                   </button>
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-sm cursor-pointer">
-
-                    📄 View
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const url = `/admin/patient/${p._id}`;
+                      console.log("Opening new tab for:", url);
+                      window.open(url, "_blank");
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-sm"
+                  >
+                    🩺 Full IPD View
                   </button>
                 </td>
               </tr>

@@ -54,3 +54,15 @@ export const getTodaysPatients = async (req, res) => {
     res.status(500).json({ error: "Error fetching today's patients" });
   }
 };
+
+//single patient by id
+
+export const getPatientById = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) return res.status(404).json({ error: "Patient not found" });
+    res.json(patient);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

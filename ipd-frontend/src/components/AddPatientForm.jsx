@@ -9,6 +9,7 @@ export default function AddPatientForm() {
     age: "",
     gender: "Male",
     contact: "",
+    address: "",
   });
   const { getToken } = useAuth();
 
@@ -90,6 +91,15 @@ export default function AddPatientForm() {
         required
         className="w-full mb-6 p-3 border border-teal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
       />
+      <label className="block mb-2 text-teal-800 font-medium">Address</label>
+      <textarea
+        name="address"
+        placeholder="Home Address"
+        value={form.address}
+        onChange={handleChange}
+        className="w-full mb-6 p-3 border border-teal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
+        rows="3"
+      ></textarea>  
 
       <button
         type="submit"

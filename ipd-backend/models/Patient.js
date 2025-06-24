@@ -7,6 +7,7 @@ const patientSchema = new mongoose.Schema({
   contact: String,
   admittedAt: { type: Date, default: Date.now },
   status: { type: String, default: 'Admitted' },
+  address: String,
   createdAt: {
     type: Date,
     default: Date.now,
