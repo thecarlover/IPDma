@@ -11,7 +11,18 @@ export default function AddPatientForm() {
     contact: "",
     address: "",
   });
+
   const { getToken } = useAuth();
+
+  const resetForm = () => {
+    setForm({
+      name: "",
+      age: "",
+      gender: "Male",
+      contact: "",
+      address: "",
+    });
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,11 +39,65 @@ export default function AddPatientForm() {
         },
         withCredentials: true,
       });
+
       toast.success(`🌿 Patient "${form.name}" added successfully!`);
-      setForm({ name: "", age: "", gender: "Male", contact: "" });
+      resetForm();
     } catch (err) {
-      console.error(err);
-      toast.error("❌ Failed to add patient.");
+      if (err.response?.status === 409) {
+        const userChoice = window.confirm(
+          "⚠️ Patient already exists with this contact.\nDo you want to update the existing patient's visit count?"
+        );
+
+        const token = await getToken();
+
+        if (userChoice) {
+          // Update visit count
+          try {
+            await axios.patch(
+              `http://localhost:8000/api/patients/visit/${form.contact}`,
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+              }
+            );
+            toast.success("✔️ Existing patient visit count updated!");
+            resetForm();
+          } catch (updateErr) {
+            console.error(updateErr);
+            toast.error("❌ Failed to update existing patient.");
+          }
+        } else {
+          const forceAdd = window.confirm(
+            "🆕 Do you want to forcibly add as a new patient anyway?"
+          );
+
+          if (forceAdd) {
+            try {
+              await axios.post(
+                "http://localhost:8000/api/patients",
+                { ...form, forceCreate: true },
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  withCredentials: true,
+                }
+              );
+              toast.success("🆕 New patient added forcibly.");
+              resetForm();
+            } catch (forceErr) {
+              console.error(forceErr);
+              toast.error("❌ Failed to forcibly add patient.");
+            }
+          }
+        }
+      } else {
+        console.error(err);
+        toast.error("❌ Failed to add patient.");
+      }
     }
   };
 
@@ -91,6 +156,7 @@ export default function AddPatientForm() {
         required
         className="w-full mb-6 p-3 border border-teal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
       />
+
       <label className="block mb-2 text-teal-800 font-medium">Address</label>
       <textarea
         name="address"
@@ -99,7 +165,7 @@ export default function AddPatientForm() {
         onChange={handleChange}
         className="w-full mb-6 p-3 border border-teal-200 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
         rows="3"
-      ></textarea>  
+      ></textarea>
 
       <button
         type="submit"

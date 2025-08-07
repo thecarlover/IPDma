@@ -1,11 +1,24 @@
 import Patient from '../models/Patient.js';
 
+
+
 export const createPatient = async (req, res) => {
   try {
-    const p = await Patient.create(req.body);
-    res.status(201).json(p);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+    const { contact, forceCreate } = req.body;
+
+    const existingPatient = await Patient.findOne({ contact });
+
+    if (existingPatient && !forceCreate) {
+      return res.status(409).json({ message: "Patient already exists" });
+    }
+
+    const newPatient = new Patient(req.body);
+    await newPatient.save();
+
+    return res.status(201).json({ message: "Patient created", patient: newPatient });
+  } catch (error) {
+    console.error("Error creating patient:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -62,6 +75,22 @@ export const getPatientById = async (req, res) => {
     const patient = await Patient.findById(req.params.id);
     if (!patient) return res.status(404).json({ error: "Patient not found" });
     res.json(patient);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateVisitCount = async (req, res) => {
+  const { contact } = req.params;
+
+  try {
+    const patient = await Patient.findOne({ contact });
+    if (!patient) return res.status(404).json({ error: "Patient not found" });
+
+    patient.visitCount += 1;
+    await patient.save();
+
+    res.status(200).json({ message: "Visit count updated", patient });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

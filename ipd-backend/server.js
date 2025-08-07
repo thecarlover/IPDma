@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { clerkMiddleware } from '@clerk/express';
 import patientRoutes from './routes/patientRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import doctorRoutes from "./routes/doctorRoutes.js";
 
 
 const app = express();
@@ -17,6 +18,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/patients', patientRoutes);
 app.use('/api/users', userRoutes);
+app.use("/api/doctors", doctorRoutes);
+
+
+
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => app.listen(process.env.PORT, () => console.log('🚀 Server running')))

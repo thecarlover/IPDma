@@ -2,10 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UpdatePatientForm from "./UpdatePatientForm";
 import { Link } from "react-router-dom";
+import { useDeletePatient } from "../hooks/useDeletePatient.js"; 
 
 export default function AllPatientsTable({ data, refetch }) {
   const [editingPatient, setEditingPatient] = useState(null);
   const navigate = useNavigate();
+  const [deletingPatient, setDeletingPatient] = useState(null);
+
+  const deletePatient = useDeletePatient();
 
   return (
     <>
@@ -40,9 +44,12 @@ export default function AllPatientsTable({ data, refetch }) {
                   >
                     ✏️ Edit
                   </button>
-                  <button className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm">
-                    🗑️ Delete
-                  </button>
+                  <button
+                  onClick={() => setDeletingPatient(p)}
+                  className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm"
+                >
+                  🗑️ Delete
+                </button>
                   <button
                     type="button"
                     onClick={() => {
@@ -70,7 +77,36 @@ export default function AllPatientsTable({ data, refetch }) {
             if (refetch) refetch();
           }}
         />
+        
       )}
+      {deletingPatient && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
+            <p>Are you sure you want to delete {deletingPatient.name}?</p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={() => setDeletingPatient(null)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  await deletePatient(deletingPatient._id, refetch);
+                  setDeletingPatient(null);
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      
     </>
+    
   );
 }

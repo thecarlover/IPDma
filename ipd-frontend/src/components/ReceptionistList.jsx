@@ -1,7 +1,15 @@
 import useFetchReceptionists from "../hooks/useFetchReceptionists";
+import { useDeleteReciptionist } from "../hooks/useDeleteReceptionist";
+// import toast from "react-hot-toast";
 
 export default function ReceptionistList() {
   const { receptionists, loading } = useFetchReceptionists();
+
+  const deleteReceptionist = useDeleteReciptionist();
+
+  //  function display(){
+  //    toast.success("Receptionist deleted successfully");
+  //  }
 
   if (loading) return <p>Loading receptionists...</p>;
 
@@ -21,10 +29,21 @@ export default function ReceptionistList() {
             <tr key={r._id}>
               <td className="border px-4 py-2">{r.name}</td>
               <td className="border px-4 py-2">{r.email}</td>
-              <td className="border px-4 py-2 flex gap-2"><button className="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-amber-500 cursor-pointer">Edit</button>
-              <button className="px-3 py-1 bg-red-600 text-white rounded hover:bg-amber-700 cursor-pointer">Delete</button>
+              <td className="border px-4 py-2 flex gap-2">
+                <button className="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-amber-500 cursor-pointer">
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("Deleting Clerk user ID:", r.id);
+                    deleteReceptionist(r.id); // <-- pass Clerk ID here
+                  }}
+                  className="px-3 py-1 bg-red-600 text-white rounded hover:bg-amber-700 cursor-pointer"
+                >
+                  Delete
+                </button>
               </td>
-             
             </tr>
           ))}
         </tbody>

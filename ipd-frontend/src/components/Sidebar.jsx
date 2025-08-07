@@ -11,6 +11,9 @@ export default function Sidebar({ open, onSelect }) {
     role === "admin" && { label: "👤 Add Receptionist", value: "receptionist" },
     
     role === "admin" && { label: "👤 All Receptionist", value: "showreceptionist" },
+
+    role === "admin" && { label: "🩺 Add Doctor", value: "adddoctor" },
+
   
   ].filter(Boolean);
 

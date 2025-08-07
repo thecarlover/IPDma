@@ -29,21 +29,6 @@ function ProtectedRoute({ role, children }) {
   return children;
 }
 
-// 🔁 Redirect to dashboard after login based on role
-// function RoleRedirector() {
-//   const { user } = useUser();
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     if (!user) return;
-//     const role = user.publicMetadata?.role;
-
-//     if (role === "admin") navigate("/admin/dashboard");
-//     else if (role === "receptionist") navigate("/reception/dashboard");
-//   }, [user, navigate]);
-
-//   return null;
-// }
 
 import { useLocation } from "react-router-dom";
 

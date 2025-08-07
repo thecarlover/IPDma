@@ -13,6 +13,15 @@ export default function AddReceptionistForm({ onClose }) {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+   const validatePassword = () => {
+    const password = formData.password;
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long.");
+      return false;
+    }
+    
+   }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -71,6 +80,7 @@ export default function AddReceptionistForm({ onClose }) {
         type="password"
         placeholder="Create Password"
         onChange={handleChange}
+        onBlur={validatePassword}
         required
       />
 

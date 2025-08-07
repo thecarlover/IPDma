@@ -5,6 +5,7 @@ import {
   updatePatient,
   deletePatient,
   getTodaysPatients,
+    updateVisitCount,
   
 } from '../controllers/patientController.js';
 import { requireRole } from '../middleware/authMiddleware.js';
@@ -27,6 +28,8 @@ router.delete('/:id', requireRole('admin','receptionist'), deletePatient);
 router.get('/today', requireRole('admin','receptionist'), getTodaysPatients);
 
 router.get("/:id", requireRole("admin", "receptionist"), getPatientById);
+
+router.patch('/visit/:contact', requireRole("admin","receptionist") ,updateVisitCount); // 👈 new route
 
 
 
