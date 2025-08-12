@@ -15,7 +15,7 @@ app.use(clerkMiddleware()); // attaches req.auth :contentReference[oaicite:4]{in
 
 app.use(cors({ origin:'http://localhost:5173', credentials: true }));
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser())
 app.use('/api/patients', patientRoutes);
 app.use('/api/users', userRoutes);
 app.use("/api/doctors", doctorRoutes);
