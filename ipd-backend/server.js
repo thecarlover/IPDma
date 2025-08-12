@@ -22,12 +22,12 @@ app.use('/api/users', userRoutes);
 app.use('/api/doctors', doctorRoutes);
 
 
-app.get('/',(req,res){
+app.get('/',(req,res)=>{
   res.send(
     {
       activeStatus:true,
       message:"Server is running"
-      
+
     }
   )
 })
