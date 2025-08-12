@@ -27,3 +27,6 @@ app.use("/api/doctors", doctorRoutes);
 mongoose.connect(process.env.MONGO_URI)
   .then(() => app.listen(process.env.PORT, () => console.log('🚀 Server running')))
   .catch(console.error);
+
+
+  module.exports = app;
