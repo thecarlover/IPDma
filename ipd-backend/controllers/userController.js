@@ -2,6 +2,8 @@
 import { clerkClient } from "@clerk/clerk-sdk-node";
 
 
+//create receptionist
+
 export const createReceptionist = async (req, res) => {
   try {
     const { email, firstName, lastName, password } = req.body;
@@ -20,6 +22,8 @@ export const createReceptionist = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+//fetch all receptionist
 
 
 export const getAllReceptionists = async (req, res) => {
@@ -42,30 +46,7 @@ export const getAllReceptionists = async (req, res) => {
   }
 };
 
-
-
-// export const deleterece = async (req, res) => {
-//   try {
-//      const { userId } = req.params
-//      const user = await clerkClient.users.getUser(userId)
-    
-
-//     console.log(user);
-
-//     if (!user) {
-//       return res.status(400).json({ message: "User ID is required." });
-//     }
-
-//     await clerkClient.users.deleteUser(userId);
-
-//     res.status(200).json({ message: "User deleted successfully." });
-//   } catch (err) {
-//     console.error("Error deleting user:", err);
-
-//     // Optional: send detailed error message in development
-//     res.status(500).json({ message: "Failed to delete user." });
-//   }
-// };
+//deleting receptionist
 
 export const deleterece = async (req, res) => {
   try {
@@ -83,3 +64,25 @@ export const deleterece = async (req, res) => {
     res.status(500).json({ message: "Failed to delete user from Clerk." });
   }
 };
+
+//updating receptionist 
+
+export const updaterece =async (req,res)=>{
+  try{
+    const {id}=req.params;
+    const {name,email}=req.body;
+    const user=await clerkClient.users.getUser(id);
+    
+    user.firstName=name;
+    user.lastName=name;
+    user.emailAddresses[0].emailAddress=email;
+    
+    await clerkClient.users.updateUser(user);
+    res.status(200).json({message:"Receptionist updated successfully."});
+    }catch(err){
+      console.error("Error updating Clerk user:", err);
+      res.status(500).json({message:"Failed to update user from Clerk."});
+      
+
+  }
+}

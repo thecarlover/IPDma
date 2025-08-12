@@ -12,7 +12,7 @@ export default function usePostDoctor() {
     setError("");
     try {
       const token = await getToken();
-      await axios.post("http://localhost:8000/api/doctors", doctorData, {
+      await axios.post("http://localhost:8000/api/doctors/create", doctorData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
