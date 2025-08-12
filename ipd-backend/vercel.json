@@ -1,13 +1,14 @@
 {
-  "functions": {
-    "server.js": {
-      "runtime": "@vercel/node@3"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/server.js"
-    }
-  ]
+    "builds":[
+        {
+            "source": "./server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes":[
+        {
+            "source": "/(.*)",
+            "dest": "/server.js"
+        }
+    ]
 }
