@@ -18,7 +18,19 @@ app.use(cookieParser());
 
 app.use('/api/patients', patientRoutes);
 app.use('/api/users', userRoutes);
+
 app.use('/api/doctors', doctorRoutes);
+
+
+app.get('/',(req,res){
+  res.send(
+    {
+      activeStatus:true,
+      message:"Server is running"
+      
+    }
+  )
+})
 
 // Connect to MongoDB once per cold start (not per request)
 let isConnected = false;
